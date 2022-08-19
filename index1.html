@@ -1,0 +1,90 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<div id="ip"></div>
+<br>
+<br>
+
+<div id="iprtc"></div>
+<script>
+  var apiKey = "1be9a6884abd4c3ea143b59ca317c6b2";
+  $.getJSON(
+    "https://ipgeolocation.abstractapi.com/v1/?api_key=" + apiKey,
+    function (data) {
+      console.log(data);
+      document.getElementById('ip').innerHTML = data.ip_address
+    }
+  );
+
+  $.get("https://www.cloudflare.com/cdn-cgi/trace", function (data) {
+    // Convert key-value pairs to JSON
+    // https://stackoverflow.com/a/39284735/452587
+    data = data
+      .trim()
+      .split("\n")
+      .reduce(function (obj, pair) {
+        pair = pair.split("=");
+        return (obj[pair[0]] = pair[1]), obj;
+      }, {});
+    console.log(data);
+    document.getElementById('iprtc').innerHTML =data.ip
+  });
+
+  apiKey = "be0f755b93290b4c100445d77533d291763a417c75524e95e07819ad";
+  $.getJSON("https://api.ipdata.co?api-key=" + apiKey, function (data) {
+    console.log(data);
+  });
+
+  apiKey = "50e887ce-e3bb-4f00-a9b9-667597db5539";
+  $.getJSON("https://ipfind.co/me?auth=" + apiKey, function (data) {
+    console.log(data);
+  });
+
+  apiKey = "f8e0b361e8f4405c94613ab534959fdf";
+  $.getJSON(
+    "https://api.ipgeolocation.io/ipgeo?apiKey=" + apiKey,
+    function (data) {
+      console.log(data);
+    }
+  );
+
+  $.getJSON("https://api.ipify.org?format=jsonp&callback=?", function (data) {
+    console.log(data);
+  });
+
+  apiKey = "25864308b6a77fd90f8bf04b3021a48c1f2fb302a676dd3809054bc1b07f5b42";
+  $.getJSON(
+    "https://api.ipinfodb.com/v3/ip-city/?format=json&key=" + apiKey,
+    function (data) {
+      console.log(data);
+    }
+  );
+
+  $.getJSON("https://ipinfo.io/json", function (data) {
+    console.log(data);
+  });
+
+  $.getJSON("https://api.ipregistry.co/?key=tryout", function (data) {
+    console.log(data);
+  });
+
+  $.getJSON("https://jsonip.com/", function (data) {
+    console.log(data);
+  });
+
+  apiKey = "ed5ebbeba257b8f262a6a9bbc0ec678e";
+  $.getJSON(
+    "https://api.snoopi.io/116.12.250.1?apikey=" + apiKey,
+    function (data) {
+      console.log(data);
+    }
+  );
+
+  apiKey = "1be9a6884abd4c3ea143b59ca317c6b2";
+  // Make the request
+  fetch("https://ipgeolocation.abstractapi.com/v1/?api_key=" + apiKey)
+    // Extract JSON body content from HTTP response
+    .then((response) => response.json())
+    // Do something with the JSON data
+    .then((data) => {
+      console.log(data);
+    });
+</script>
