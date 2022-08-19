@@ -1,74 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./rtc.js"></script>
+</head>
+
 <body>
-  <div id="list"></div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script type="application/javascript">
-const getWebRTCData = () => {
-    return new Promise(resolve => {
-        try {
-            const rtcPeerConnection = (
-                window.RTCPeerConnection ||
-                window.webkitRTCPeerConnection ||
-                window.mozRTCPeerConnection ||
-                window.msRTCPeerConnection
-            )
-            const connection = new rtcPeerConnection({
-                iceServers: [{
-                    urls: ["stun:stun.l.google.com:19302?transport=udp"]
-                }]
-            }, {
-                optional: [{
-                    RtpDataChannels: true
-                }]
-            })
-            let success = false
-            connection.onicecandidate = async event => {
-                const candidateEncoding = /((udp|tcp)\s)((\d|\w)+\s)((\d|\w|(\.|\:))+)(?=\s)/ig
-                const connectionLineEncoding = /(c=IN\s)(.+)\s/ig
-                if (!event.candidate) {
-                    return
-                }
-                success = true
-                const {
-                    candidate
-                } = event.candidate
-                const encodingMatch = candidate.match(candidateEncoding)
-                if (encodingMatch) {
-                    const {
-                        sdp
-                    } = event.target.localDescription
-                    const ipAddress = event.candidate.address
-                    const candidateIpAddress = encodingMatch[0].split(' ')[2]
-                    const connectionLineIpAddress = sdp.match(connectionLineEncoding)[0].trim().split(' ')[2]
-					
-					console.log(sdp)
-					
-                    const successIpAddresses = [
-                        ipAddress,
-                        candidateIpAddress,
-                        connectionLineIpAddress
-                    ].filter(ip => ip != undefined)
-                    const matching = new Set(successIpAddresses).size == 1
-                    const data = {
-                        ['ip address']: ipAddress,
-                        ['candidate encoding']: candidateIpAddress,
-                        ['connection line']: connectionLineIpAddress,
-                        ['matching']: matching
-                    }
-                    return resolve(data)
-                }
-            }
-            setTimeout(() => !success && resolve('RTCPeerConnection failed'), 1000)
-            connection.createDataChannel('bl')
-            connection.createOffer()
-                .then(event => connection.setLocalDescription(event))
-                .catch(error => console.log(error))
-        } catch (error) {
-            return resolve('RTCPeerConnection failed')
-        }
-    })
-}
 
-
-getWebRTCData().then(response => console.log(response))
-</script>
+</html>
